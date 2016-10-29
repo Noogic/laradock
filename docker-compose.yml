@@ -27,9 +27,30 @@ services:
             - "dockerhost:127.0.0.1"
         ports:
            - "22:22"
-           - "3000:3000"
-           - "3001:3001"
         tty: true
+
+### Node Container ##########################################
+
+    node:
+        build:
+            context: ./node
+        volumes_from:
+            - volumes_source
+        tty: true
+
+
+### Gulp Watch Container ####################################
+
+    gulp-watch:
+        build:
+            context: ./gulp-watch
+        volumes_from:
+            - volumes_source
+        ports:
+            - "3000:3000"
+            - "3001:3001"
+        tty: true
+
 
 ### PHP-FPM Container #######################################
 
@@ -52,7 +73,7 @@ services:
             - workspace
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
-            - "dockerhost:10.0.75.1"
+            - "dockerhost:127.0.0.1"
         environment:
             # IMPORTANT: Set the Remote Interpreter entry matching name to `laravel`
             - PHP_IDE_CONFIG="serverName=laravel"
